@@ -1,0 +1,53 @@
+﻿<div class="container mt-5">
+    <h2 class="text-primary text-center mb-4">THÔNG TIN THANH TOÁN</h2>
+
+    @* HIỂN THỊ THÔNG BÁO LỖI KHI CHƯA ĐĂNG NHẬP (Bảng 27) *@
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger shadow-sm border-2">
+            <i class="bi bi-exclamation-octagon-fill"></i> @TempData["ErrorMessage"]
+            <a href="/Home/Login" class="btn btn-sm btn-outline-primary ms-3">Đăng nhập ngay</a>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-7">
+            <form asp-action="ProcessCheckout" method="post" class="p-4 border rounded shadow-sm">
+                @* Các ô nhập liệu (Họ tên, SĐT, Địa chỉ) giữ nguyên theo Bảng 28 *@
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Họ và tên người nhận</label>
+                    <input type="text" name="hoTen" class="form-control" required placeholder="Nhập họ tên...">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Số điện thoại</label>
+                    <input type="text" name="sdt" class="form-control" required placeholder="Nhập số điện thoại...">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Địa chỉ giao hàng cụ thể</label>
+                    <textarea name="diaChi" class="form-control" rows="3" required placeholder="Số nhà, tên đường..."></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Phương thức thanh toán</label>
+                    <select name="phuongThucTT" class="form-select">
+                        <option value="COD">Thanh toán khi nhận hàng (COD)</option>
+                        <option value="Bank">Chuyển khoản ngân hàng</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-lg btn-warning text-white fw-bold w-100">XÁC NHẬN ĐẶT HÀNG</button>
+            </form>
+        </div>
+
+        @* Phần Tóm tắt đơn hàng bên phải (Hình 26) *@
+        <div class="col-md-5">
+            <div class="card border-info">
+                <div class="card-header bg-info text-white fw-bold">TÓM TẮT ĐƠN HÀNG</div>
+                <div class="card-body text-center">
+                    <p class="fs-5">
+                        Tổng tiền: <br>
+                        <span class="text-danger fw-bold fs-3">@ViewBag.TongTien?.ToString("#,##0") VNĐ</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+﻿@model IEnumerable<BabyShop.Models.CartItem>
+
+<div class="container mt-5">
+    <h2 class="text-primary mb-4">Giỏ hàng của bạn</h2>
+    <table class="table table-bordered align-middle text-center">
+        <thead class="table-info">
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.tenSanPham</td>
+                    <td>@item.giaBan.ToString("#,##0") VNĐ</td>
+                    <td>@item.soLuong</td>
+                    <td class="fw-bold text-danger">@item.tongTien.ToString("#,##0") VNĐ</td>
+                    <td>
+                        <a asp-action="RemoveFromCart" asp-route-id="@item.maSanPham" class="btn btn-sm btn-danger">Xóa</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="text-end mt-3">
+        <h4>Tổng thanh toán: <span class="text-danger">@ViewBag.TongThanhToan?.ToString("#,##0") VNĐ</span></h4>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Tiếp tục mua sắm</a>
+        <<a asp-controller="Order" asp-action="Checkout"
+            class="btn btn-warning fw-bold text-white">
+            Tiến hành thanh toán
+        </a>
+    </div>
+</div>

@@ -1,0 +1,90 @@
+﻿@model BabyShop.Models.SanPham
+
+@{
+    ViewData["Title"] = "Chi tiết sản phẩm";
+}
+
+<div class="container mt-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+            <li class="breadcrumb-item active">@Model.tenSanPham</li>
+        </ol>
+    </nav>
+
+    <div class="row bg-white p-4 shadow-sm rounded">
+        <div class="col-md-5 text-center">
+            <img src="/Images/sp@(Model.maSanPham).jpg"
+                 class="img-fluid rounded border shadow-sm"
+                 alt="@Model.tenSanPham"
+                 style="max-height: 500px; object-fit: contain;"
+                 onerror="this.src='/Images/sp1.jpg'" />
+        </div>
+
+        <div class="col-md-7">
+            <h2 class="text-primary fw-bold">@Model.tenSanPham</h2>
+            <p class="text-muted">Loat hàng: @Model.LoaiHang.tenLoaiHang</p>
+            <h3 class="text-danger fw-bold">Giá: @Model.giaBan.ToString("#,##0") VNĐ</h3>
+            <hr />
+
+            <div class="mb-3 bg-light p-3 rounded">
+                <strong><i class="bi bi-info-circle"></i> Thông tin chi tiết:</strong><br />
+                <span class="ms-3">- Chất liệu: @Model.chatLieu</span><br />
+                <span class="ms-3">- Kích cỡ mặc định: @Model.kichCo</span><br />
+                <span class="ms-3">
+                    - Tình trạng:
+                    <span class="@(Model.soLuongTon > 0 ? "text-success" : "text-danger") fw-bold">
+                        @(Model.soLuongTon > 0 ? $"Còn {Model.soLuongTon} sản phẩm" : "Hết hàng")
+                    </span>
+                </span>
+            </div>
+
+            <!-- Form Thêm vào giỏ hàng (Cập nhật theo Bảng 8 & Bảng 26) -->
+            <form asp-controller="Cart" asp-action="AddToCart" method="post" class="mt-4">
+                <input type="hidden" name="maSanPham" value="@Model.maSanPham" />
+
+                <div class="row">
+                    <!-- Lựa chọn Kích cỡ theo yêu cầu Bảng 26 [2] -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Chọn Kích cỡ (Size):</label>
+                        <select name="size" class="form-select" required>
+                            <option value="">-- Vui lòng chọn size --</option>
+                            <option value="S">Size S (5-7kg)</option>
+                            <option value="M">Size M (8-10kg)</option>
+                            <option value="L">Size L (11-13kg)</option>
+                            <option value="XL">Size XL (14-16kg)</option>
+                        </select>
+                    </div>
+
+                    <!-- Lựa chọn Màu sắc theo yêu cầu Bảng 26 [2] -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Chọn Màu sắc:</label>
+                        <select name="mauSac" class="form-select" required>
+                            <option value="">-- Vui lòng chọn màu --</option>
+                            <option value="Trắng">Trắng tinh khôi</option>
+                            <option value="Xanh">Xanh năng động</option>
+                            <option value="Hồng">Hồng dễ thương</option>
+                            <option value="Vàng">Vàng nổi bật</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-3">
+                    <div class="input-group" style="max-width: 150px;">
+                        <span class="input-group-text">Số lượng</span>
+                        <input type="number" name="soLuong" class="form-control text-center" value="1" min="1" max="@Model.soLuongTon">
+                    </div>
+
+                    <button type="submit" class="btn btn-lg btn-warning text-white fw-bold px-4 shadow @(Model.soLuongTon <= 0 ? "disabled" : "")">
+                        <i class="bi bi-cart-plus-fill"></i> THÊM VÀO GIỎ HÀNG
+                    </button>
+                </div>
+
+                @if (Model.soLuongTon <= 0)
+                {
+                    <p class="text-danger mt-2 small">* Sản phẩm hiện đang hết hàng, vui lòng quay lại sau.</p>
+                }
+            </form>
+        </div>
+    </div>
+</div>

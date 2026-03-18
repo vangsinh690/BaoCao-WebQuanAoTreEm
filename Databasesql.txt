@@ -1,0 +1,49 @@
+CREATE TABLE NguoiDung (
+    maNguoiDung INT PRIMARY KEY,
+    hoTen VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    matKhau VARCHAR(255) NOT NULL,
+    vaiTro VARCHAR(50) 
+);
+CREATE TABLE LoaiHang (
+    maLoaiHang INT PRIMARY KEY,
+    tenLoaiHang VARCHAR(100) NOT NULL
+);
+CREATE TABLE SanPham (
+    maSanPham INT PRIMARY KEY,
+    tenSanPham VARCHAR(200) NOT NULL,
+    giaBan DECIMAL(18, 2) NOT NULL,
+    kichCo VARCHAR(20),
+    chatLieu VARCHAR(50),
+    soLuongTon INT DEFAULT 0,
+    maLoaiHang INT,
+    FOREIGN KEY (maLoaiHang) REFERENCES LoaiHang(maLoaiHang)
+);
+CREATE TABLE DonHang (
+    maDonHang INT PRIMARY KEY,
+    maNguoiDung INT,
+    ngayDat DATETIME DEFAULT GETDATE(),
+    tongTien DECIMAL(18, 2),
+    trangThai VARCHAR(50), -- Chờ duyệt, Đang giao, Thành công
+    diaChiGiaoHang TEXT,
+    FOREIGN KEY (maNguoiDung) REFERENCES NguoiDung(maNguoiDung)
+);
+CREATE TABLE ChiTietDonHang (
+    maChiTiet INT PRIMARY KEY,
+    maDonHang INT,
+    maSanPham INT,
+    soLuong INT NOT NULL,
+    giaLucMua DECIMAL(18, 2),
+    FOREIGN KEY (maDonHang) REFERENCES DonHang(maDonHang),
+    FOREIGN KEY (maSanPham) REFERENCES SanPham(maSanPham)
+);
+INSERT INTO LoaiHangs (tenLoaiHang) 
+VALUES 
+(N'Đồ bé trai'), 
+(N'Đồ bé gái'), 
+(N'Phụ kiện cho bé');
+INSERT INTO SanPham (maSanPham, tenSanPham, giaBan, kichCo, chatLieu, soLuongTon, maLoaiHang) 
+VALUES 
+(101, 'Váy công chúa bé gái', 250000, 'M (2-3 tuổi)', 'Cotton phối Ren', 15, 2),
+(102, 'Bộ đồ thun năng động bé trai', 180000, 'L (4-5 tuổi)', 'Thun lạnh', 20, 1),
+(103, 'Áo khoác gió trẻ em', 320000, 'S (1-2 tuổi)', 'Vải dù cao cấp', 10, 1);

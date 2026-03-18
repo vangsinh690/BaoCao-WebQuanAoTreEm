@@ -1,0 +1,39 @@
+﻿@model IEnumerable<BabyShop.Models.SanPham>
+
+@{
+    ViewData["Title"] = "Kết quả tìm kiếm";
+}
+
+<div class="container mt-4">
+    <h3>Kết quả tìm kiếm cho: "@ViewBag.SearchTerm"</h3>
+    <hr />
+
+    @if (!Model.Any())
+    {
+        @* Xử lý Luồng sự kiện phụ A1: Không tìm thấy kết quả [6] *@
+        <div class="alert alert-warning shadow-sm">
+            <i class="bi bi-exclamation-triangle"></i> Rất tiếc, không tìm thấy sản phẩm phù hợp.
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 shadow-sm border-info">
+                        <a asp-action="Details" asp-route-id="@item.maSanPham">
+                            <img src="/Images/sp@(item.maSanPham).jpg" class="card-img-top"
+                                 onerror="this.src='/Images/sp1.jpg'">
+                        </a>
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-truncate">@item.tenSanPham</h5>
+                            <p class="text-danger fw-bold">@item.giaBan.ToString("#,##0") VNĐ</p>
+                            <a asp-action="Details" asp-route-id="@item.maSanPham" class="btn btn-sm btn-outline-primary">Xem chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
